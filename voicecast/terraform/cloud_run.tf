@@ -44,6 +44,7 @@ resource "google_cloud_run_v2_job" "training" {
           limits = {
             cpu    = "4"
             memory = "16Gi"
+            nvidia_tesla_t4  = 1
           }
         }
       }
