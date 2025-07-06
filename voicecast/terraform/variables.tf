@@ -4,7 +4,7 @@ variable "gcp_project_id" {
   default = "voicecast-464815"
 }
 
-variable "gcp_region" {
+variable "gcp_datacenter_euw" {
   type        = string
   description = "The GCP region for all the resources."
   default     = "europe-west1"

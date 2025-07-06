@@ -1,7 +1,7 @@
 # --- Cloud Run Job pour Generation d'audio ---
 resource "google_cloud_run_v2_job" "generate_audio" {
   name     = "generate-audio"
-  location = var.gcp_region
+  location = var.gcp_datacenter_euw
 
   template {
     task_count = 1
@@ -10,7 +10,7 @@ resource "google_cloud_run_v2_job" "generate_audio" {
       timeout         = "600s" # 10 minutes
 
       containers {
-        image = "${var.gcp_region}-docker.pkg.dev/${var.gcp_project_id}/${var.repo_name}/generate_audio"
+        image = "${var.gcp_datacenter_euw}-docker.pkg.dev/${var.gcp_project_id}/${var.repo_name}/generate_audio"
 
         resources {
           limits = {
@@ -28,7 +28,7 @@ resource "google_cloud_run_v2_job" "generate_audio" {
 # --- Cloud Run Job pour Entrainement ---
 resource "google_cloud_run_v2_job" "training" {
   name     = "training"
-  location = var.gcp_region
+  location = var.gcp_datacenter_euw
 
   template {
     task_count = 1
@@ -38,17 +38,35 @@ resource "google_cloud_run_v2_job" "training" {
       timeout         = "7200s"
 
       containers {
-        image = "${var.gcp_region}-docker.pkg.dev/${var.gcp_project_id}/${var.repo_name}/train_model"
+        image = "${var.gcp_datacenter_euw}-docker.pkg.dev/${var.gcp_project_id}/${var.repo_name}/train_model"
 
         resources {
           limits = {
             cpu    = "4"
             memory = "16Gi"
-            nvidia_tesla_t4  = 1
+            # nvidia_tesla_t4  = 1    # Pas compris dans le free trial
           }
         }
       }
     }
   }
   depends_on = [google_service_account.cloud_run_job_runner]
+}
+
+
+resource "google_cloud_run_v2_service" "tts_api" {
+  name     = "tts-api"
+  location = var.gcp_datacenter_euw
+
+  template {
+    containers {
+      image = "${var.gcp_datacenter_euw}-docker.pkg.dev/${var.gcp_project_id}/${var.repo_name}/tts_api"
+
+      ports {
+        container_port = 8080
+      }
+    }
+
+    service_account = google_service_account.cloud_run_job_runner.email
+  }
 }

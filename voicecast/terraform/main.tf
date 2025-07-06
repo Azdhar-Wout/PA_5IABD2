@@ -9,7 +9,7 @@ terraform {
 
 provider "google" {
   project = var.gcp_project_id
-  region  = var.gcp_region
+  region  = var.gcp_datacenter_euw
 }
 
 # Enable the necessary APIs for the project
@@ -19,7 +19,8 @@ resource "google_project_service" "apis" {
     "storage.googleapis.com",
     "artifactregistry.googleapis.com",
     "iam.googleapis.com",
-    "cloudbuild.googleapis.com" # Needed to build images if you automate it
+    "cloudbuild.googleapis.com", # Needed to build images if you automate it
+    "cloudscheduler.googleapis.com",
   ])
 
   project = var.gcp_project_id
