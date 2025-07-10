@@ -15,3 +15,9 @@ variable "repo_name" {
   description = "Name for the Artifact Registry repository."
   default     = "voicecast-repo"
 }
+
+variable "project_name" {
+    type = string
+    description = "Name of the app"
+    default = "voicecast"
+}
