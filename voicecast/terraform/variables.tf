@@ -18,6 +18,6 @@ variable "repo_name" {
 
 variable "project_name" {
     type = string
-    description = "Name of the app"
+    description = "Name of the app."
     default = "voicecast"
 }
