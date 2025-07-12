@@ -7,10 +7,13 @@ resource "google_cloud_run_v2_job" "generate_audio" {
     task_count = 1
     template {
       service_account = google_service_account.cloud_run_job_runner.email
-      timeout         = "600s" # 10 minutes
+      timeout         = "300s" # 5 minutes
 
       containers {
-        image = "${var.gcp_datacenter_euw}-docker.pkg.dev/${var.gcp_project_id}/${var.repo_name}/generate_audio"
+        # Image placeholder
+        image = "gcr.io/google-samples/hello-app:1.0"
+
+        # Vraie image : image = "${var.gcp_datacenter_euw}-docker.pkg.dev/${var.gcp_project_id}/${var.repo_name}/generate_audio"
 
         resources {
           limits = {
@@ -35,10 +38,12 @@ resource "google_cloud_run_v2_job" "training" {
     template {
       service_account = google_service_account.cloud_run_job_runner.email
       # TODO : redéfinir le timer en fonction du temps d'entrainement
-      timeout         = "7200s"
+      timeout = "7200s"
 
       containers {
-        image = "${var.gcp_datacenter_euw}-docker.pkg.dev/${var.gcp_project_id}/${var.repo_name}/train_model"
+        # Image placeholder
+        image = "gcr.io/google-samples/hello-app:1.0"
+        # Vraie image : image = "${var.gcp_datacenter_euw}-docker.pkg.dev/${var.gcp_project_id}/${var.repo_name}/train_model"
 
         resources {
           limits = {
@@ -60,7 +65,9 @@ resource "google_cloud_run_v2_service" "tts_api" {
 
   template {
     containers {
-      image = "${var.gcp_datacenter_euw}-docker.pkg.dev/${var.gcp_project_id}/${var.repo_name}/tts_api"
+       # Image placeholder
+        image = "gcr.io/google-samples/hello-app:1.0"
+        # Vraie image : image = "${var.gcp_datacenter_euw}-docker.pkg.dev/${var.gcp_project_id}/${var.repo_name}/tts_api"
 
       ports {
         container_port = 8080

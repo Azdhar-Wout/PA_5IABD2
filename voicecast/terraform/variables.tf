@@ -1,7 +1,7 @@
 variable "gcp_project_id" {
   type        = string
   description = "The GCP Project ID to deploy resources into."
-  default = "voicecast-464815"
+  default     = "voicecast-464815"
 }
 
 variable "gcp_datacenter_euw" {
@@ -17,7 +17,8 @@ variable "repo_name" {
 }
 
 variable "project_name" {
-    type = string
+    type        = string
     description = "Name of the app."
-    default = "voicecast"
+    default     = "voicecast"
 }
+

@@ -4,8 +4,14 @@ resource "google_storage_bucket" "basic_bucket" {
   location = var.gcp_datacenter_euw
   force_destroy = false         # WARNING WARNING WARNING
   uniform_bucket_level_access = true
+
+  lifecycle {
+    prevent_destroy = true
+  }
+
   depends_on = [google_project_service.apis]
 }
+
 
 # Sub buckets
 resource "google_storage_bucket_object" "sub_buckets" {
@@ -18,4 +24,8 @@ resource "google_storage_bucket_object" "sub_buckets" {
   bucket =  google_storage_bucket.basic_bucket.name
   name = each.value
   content = " "
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
